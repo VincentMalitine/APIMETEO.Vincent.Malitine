@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Windows;
 
@@ -15,12 +16,14 @@ namespace APIMETEO.Vincent.Malitine
             SetWeatherDataAsync();
         }
 
+        // Met à jour les données météo toutes les secondes
         private async void SetWeatherDataAsync()
         {
             while (true)
             {
                 await Task.Delay(1000);
                 var main = await GetWeatherDataAsync();
+                
                 if (main != null)
                 {
                     Temp.Text = $"{main.temp:F1}°C";
@@ -32,6 +35,7 @@ namespace APIMETEO.Vincent.Malitine
             }
         }
 
+        // Récupère les données météo depuis l'API OpenWeatherMap
         public async Task<Main?> GetWeatherDataAsync()
         {
             try
@@ -55,18 +59,16 @@ namespace APIMETEO.Vincent.Malitine
             return null;
         }
 
+        // Ouvre la fenêtre de recherche de ville
         private void SearchCityBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Ouvrir la fenêtre de recherche
             CitySearchWindow searchWindow = new CitySearchWindow
             {
                 Owner = this
             };
 
-            // Afficher la fenêtre en mode dialog
             if (searchWindow.ShowDialog() == true)
             {
-                // Si l'utilisateur a validé, mettre à jour la ville
                 if (!string.IsNullOrEmpty(searchWindow.SelectedCity))
                 {
                     City = searchWindow.SelectedCity;
@@ -81,7 +83,7 @@ namespace APIMETEO.Vincent.Malitine
         }
     }
 
-    // Classes de désérialisation JSON
+    // Classes pour désérialiser la réponse JSON de l'API
     public class Clouds
     {
         public int all { get; set; }

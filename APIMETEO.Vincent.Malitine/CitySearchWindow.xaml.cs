@@ -4,9 +4,7 @@ using System.Windows.Input;
 
 namespace APIMETEO.Vincent.Malitine
 {
-    /// <summary>
-    /// Logique d'interaction pour CitySearchwindows.xaml
-    /// </summary>
+    // Fenêtre de dialogue pour rechercher une ville
     public partial class CitySearchWindow : Window
     {
         public string? SelectedCity { get; private set; }
@@ -14,10 +12,11 @@ namespace APIMETEO.Vincent.Malitine
         public CitySearchWindow()
         {
             InitializeComponent();
-            // Focus automatique sur la TextBox
+            // Focus automatique sur la zone de texte
             Loaded += (s, e) => CityTyping.Focus();
         }
 
+        // Valide la saisie et ferme la fenêtre
         private void ValidateBtn_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(CityTyping.Text))
@@ -33,13 +32,14 @@ namespace APIMETEO.Vincent.Malitine
             }
         }
 
+        // Annule et ferme la fenêtre
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
             Close();
         }
 
-        // Permet de valider avec la touche Entrée
+        // Gère les touches Entrée et Échap
         private void CityTyping_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
