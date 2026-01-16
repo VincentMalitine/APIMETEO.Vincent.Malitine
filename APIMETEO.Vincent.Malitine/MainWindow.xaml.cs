@@ -1,51 +1,87 @@
 ﻿using Newtonsoft.Json;
 using System.Net.Http;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace APIMETEO.Vincent.Malitine
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        public string City = "Paris";
+
         public MainWindow()
         {
             InitializeComponent();
+            UpdateCityDisplay();
+            SetWeatherDataAsync();
         }
-    
-        public async Task<Main> GetWeatherDataAsync()
+
+        private async void SetWeatherDataAsync()
         {
-            using HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync("https://api.openweathermap.org/data/2.5/weather?q=annecy,fr&appid=c21a75b667d6f7abb81f118dcf8d4611&units=metric");
-            if (response.IsSuccessStatusCode)
+            while (true)
             {
-                var content = await response.Content.ReadAsStringAsync();
-                Root rot = JsonConvert.DeserializeObject<Root>(content);
-                var Main = rot.main;
-                return Main;
+                await Task.Delay(1000);
+                var main = await GetWeatherDataAsync();
+                if (main != null)
+                {
+                    Temp.Text = $"{main.temp:F1}°C";
+                    TempHigh.Text = $"{main.temp_max:F1}°C";
+                    TempLow.Text = $"{main.temp_min:F1}°C";
+                    Precip.Text = $"{main.humidity}%";
+                    TempMid.Text = $"{main.feels_like:F1}°C";
+                }
             }
-            else
+        }
+
+        public async Task<Main?> GetWeatherDataAsync()
+        {
+            try
             {
-                var rot = "Error";
+                using HttpClient client = new HttpClient();
+                HttpResponseMessage response = await client.GetAsync(
+                    $"https://api.openweathermap.org/data/2.5/weather?q={City},fr&appid=c21a75b667d6f7abb81f118dcf8d4611&units=metric");
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    Root? rot = JsonConvert.DeserializeObject<Root>(content);
+                    return rot?.main;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de la récupération des données: {ex.Message}", 
+                    "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return null;
         }
 
+        private void SearchCityBtn_Click(object sender, RoutedEventArgs e)
+        {
+            // Ouvrir la fenêtre de recherche
+            CitySearchWindow searchWindow = new CitySearchWindow
+            {
+                Owner = this
+            };
 
+            // Afficher la fenêtre en mode dialog
+            if (searchWindow.ShowDialog() == true)
+            {
+                // Si l'utilisateur a validé, mettre à jour la ville
+                if (!string.IsNullOrEmpty(searchWindow.SelectedCity))
+                {
+                    City = searchWindow.SelectedCity;
+                    UpdateCityDisplay();
+                }
+            }
+        }
 
+        private void UpdateCityDisplay()
+        {
+            CityNameDisplay.Text = $"{City}, France";
+        }
     }
 
-
+    // Classes de désérialisation JSON
     public class Clouds
     {
         public int all { get; set; }
@@ -71,18 +107,18 @@ namespace APIMETEO.Vincent.Malitine
 
     public class Root
     {
-        public Coord coord { get; set; }
-        public List<Weather> weather { get; set; }
-        public string @base { get; set; }
-        public Main main { get; set; }
+        public Coord? coord { get; set; }
+        public List<Weather>? weather { get; set; }
+        public string? @base { get; set; }
+        public Main? main { get; set; }
         public int visibility { get; set; }
-        public Wind wind { get; set; }
-        public Clouds clouds { get; set; }
+        public Wind? wind { get; set; }
+        public Clouds? clouds { get; set; }
         public int dt { get; set; }
-        public Sys sys { get; set; }
+        public Sys? sys { get; set; }
         public int timezone { get; set; }
         public int id { get; set; }
-        public string name { get; set; }
+        public string? name { get; set; }
         public int cod { get; set; }
     }
 
@@ -90,7 +126,7 @@ namespace APIMETEO.Vincent.Malitine
     {
         public int type { get; set; }
         public int id { get; set; }
-        public string country { get; set; }
+        public string? country { get; set; }
         public int sunrise { get; set; }
         public int sunset { get; set; }
     }
@@ -98,9 +134,9 @@ namespace APIMETEO.Vincent.Malitine
     public class Weather
     {
         public int id { get; set; }
-        public string main { get; set; }
-        public string description { get; set; }
-        public string icon { get; set; }
+        public string? main { get; set; }
+        public string? description { get; set; }
+        public string? icon { get; set; }
     }
 
     public class Wind
