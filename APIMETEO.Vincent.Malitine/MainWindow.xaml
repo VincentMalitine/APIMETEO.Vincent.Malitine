@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:APIMETEO.Vincent.Malitine"
         mc:Ignorable="d"
-        Title="V's Meteo 🍃" Height="600" Width="900"
+        Title="V's Meteo 🍃" Height="700" Width="900"
         Background="#0f1419"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
@@ -19,6 +19,19 @@
             <Setter Property="Effect">
                 <Setter.Value>
                     <DropShadowEffect Color="Black" Opacity="0.5" BlurRadius="20" ShadowDepth="5"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style pour les cartes de prévision -->
+        <Style x:Key="ForecastCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="#1a1f2e"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" Opacity="0.3" BlurRadius="15" ShadowDepth="3"/>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -80,22 +93,18 @@
     <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- En-tête avec bouton de recherche -->
-        <Grid Grid.Row="0" Margin="0,0,0,30">
-            <StackPanel HorizontalAlignment="Left">
-                <TextBlock Text="☁️ MÉTÉO" 
-                           Foreground="White" 
-                           FontSize="32" 
-                           FontWeight="Bold"/>
-                <TextBlock Name="CityNameDisplay"
-                           Foreground="#58a6ff" 
-                           FontSize="18" 
-                           Margin="0,5,0,0"/>
-            </StackPanel>
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="☁️ MÉTÉO" 
+                       Foreground="White" 
+                       FontSize="32" 
+                       FontWeight="Bold"
+                       HorizontalAlignment="Left"/>
 
             <Button HorizontalAlignment="Right"
                     VerticalAlignment="Top"
@@ -105,96 +114,209 @@
                     Click="SearchCityBtn_Click"/>
         </Grid>
 
-        <!-- Zone principale -->
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.2*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <!-- Carte principale - Météo actuelle -->
+        <Border Grid.Row="1" 
+                Style="{StaticResource CardStyle}" 
+                Margin="0,0,0,20"
+                Padding="30">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <!-- Carte principale - Température actuelle -->
-            <Border Grid.Column="0" Style="{StaticResource CardStyle}" 
-                    Margin="0,0,15,0" 
-                    Background="#1a1f2e">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                <!-- Nom de la ville -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,50,0">
+                    <TextBlock Name="CityNameDisplay"
+                               Text="Paris"
+                               Foreground="White" 
+                               FontSize="36" 
+                               FontWeight="Bold"/>
+                </StackPanel>
 
-                    <!-- Icône météo -->
-                    <Viewbox Grid.Row="0" Height="120" Width="120" 
-                             HorizontalAlignment="Stretch" 
-                             Margin="0,10,0,0">
-                        <TextBlock Name="Weather" FontSize="100"/>
+                <!-- Icône météo et températures -->
+                <StackPanel Grid.Column="1" 
+                            Orientation="Horizontal" 
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <Viewbox Height="80" Width="80" Margin="0,0,20,0">
+                        <TextBlock Name="Weather"
+                                   Text="?"
+                                   FontSize="80"
+                                   Foreground="White"/>
                     </Viewbox>
-
-                    <!-- Température actuelle -->
-                    <TextBlock Grid.Row="1" 
-                               Name="Temp"
-                               Style="{StaticResource MainTempStyle}"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Text="--°C"
-                               FontSize="50"/>
-
-                    <!-- Ressenti -->
-                    <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,0,0,20">
-                        <TextBlock Text="RESSENTI" Style="{StaticResource TitleStyle}" 
-                                   HorizontalAlignment="Center"/>
-                        <TextBlock Name="TempMid" 
-                                   Style="{StaticResource ValueStyle}"
-                                   FontSize="24"
-                                   HorizontalAlignment="Center"
-                                   Text="--°C"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Name="Temp"
+                                   Text="--°C"
+                                   Foreground="White"
+                                   FontSize="56"
+                                   FontWeight="Light"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                            <TextBlock Text="Temp moyenne: " 
+                                       Foreground="#8b949e"
+                                       FontSize="14"
+                                       FontWeight="Medium"/>
+                            <TextBlock Name="TempMid"
+                                       Text="--°C"
+                                       Foreground="#8b949e"
+                                       FontSize="14"
+                                       FontWeight="Medium"/>
+                        </StackPanel>
                     </StackPanel>
-                </Grid>
-            </Border>
+                </StackPanel>
 
-            <!-- Panneau latéral - Détails -->
-            <StackPanel Grid.Column="1" Margin="15,0,0,0">
+                <!-- Détails supplémentaires -->
+                <StackPanel Grid.Column="2" 
+                            VerticalAlignment="Center"
+                            Margin="50,0,0,0">
+                    <Border Background="#161b22" 
+                            CornerRadius="8" 
+                            Padding="15,10"
+                            Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock Text="MAX" 
+                                       Foreground="#8b949e" 
+                                       FontSize="11"
+                                       FontWeight="Medium"/>
+                            <TextBlock Name="TempHigh" 
+                                       Text="--°C"
+                                       Foreground="#ff6b6b"
+                                       FontSize="18"
+                                       FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Background="#161b22" 
+                            CornerRadius="8" 
+                            Padding="15,10"
+                            Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock Text="MIN" 
+                                       Foreground="#8b949e" 
+                                       FontSize="11"
+                                       FontWeight="Medium"/>
+                            <TextBlock Name="TempLow" 
+                                       Text="--°C"
+                                       Foreground="#4dabf7"
+                                       FontSize="18"
+                                       FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Background="#161b22" 
+                            CornerRadius="8" 
+                            Padding="15,10">
+                        <StackPanel>
+                            <TextBlock Text="HUMIDITÉ" 
+                                       Foreground="#8b949e" 
+                                       FontSize="11"
+                                       FontWeight="Medium"/>
+                            <TextBlock Name="Precip" 
+                                       Text="--%"
+                                       Foreground="#51cf66"
+                                       FontSize="18"
+                                       FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </Border>
 
-                <!-- Carte Température Max -->
-                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,15">
-                    <StackPanel>
-                        <TextBlock Text="🔺 MAXIMUM" Style="{StaticResource TitleStyle}"/>
-                        <TextBlock Name="TempHigh" 
-                                   Style="{StaticResource ValueStyle}"
-                                   Text="--°C"/>
-                    </StackPanel>
-                </Border>
+        <!-- Prévisions sur 6 jours -->
+        <Grid Grid.Row="2" Margin="0,0,0,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-                <!-- Carte Température Min -->
-                <Border Style="{StaticResource CardStyle}" Margin="0,0,0,15">
-                    <StackPanel>
-                        <TextBlock Text="🔻 MINIMUM" Style="{StaticResource TitleStyle}"/>
-                        <TextBlock Name="TempLow" 
-                                   Style="{StaticResource ValueStyle}"
-                                   Text="--°C"/>
-                    </StackPanel>
-                </Border>
+            <!-- Titre des prévisions -->
+            <TextBlock Grid.Row="0" 
+                       Text="PRÉVISIONS" 
+                       Foreground="#8b949e"
+                       FontSize="16"
+                       FontWeight="SemiBold"
+                       Margin="5,0,0,15"/>
 
-                <!-- Carte Humidité -->
-                <Border Style="{StaticResource CardStyle}">
-                    <StackPanel>
-                        <TextBlock Text="💧 HUMIDITÉ" Style="{StaticResource TitleStyle}"/>
-                        <TextBlock Name="Precip" 
-                                   Style="{StaticResource ValueStyle}"
-                                   Text="--%"/>
-                    </StackPanel>
-                </Border>
-            </StackPanel>
+            <!-- Grille des prévisions -->
+            <ItemsControl Grid.Row="1" Name="ForecastList">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3" Rows="2"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource ForecastCardStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Jour -->
+                                <StackPanel Grid.Column="0" 
+                                            VerticalAlignment="Center"
+                                            Margin="0,0,15,0">
+                                    <TextBlock Text="{Binding DayName}" 
+                                               Foreground="White"
+                                               FontSize="14"
+                                               FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Date}" 
+                                               Foreground="#8b949e"
+                                               FontSize="11"
+                                               Margin="0,2,0,0"/>
+                                </StackPanel>
+
+                                <!-- Icône et condition -->
+                                <StackPanel Grid.Column="1" 
+                                            Orientation="Horizontal"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
+                                    <Viewbox Height="35" Width="35" Margin="0,0,10,0">
+                                        <TextBlock Text="{Binding WeatherIcon}" 
+                                                   FontSize="35"
+                                                   Foreground="White"/>
+                                    </Viewbox>
+                                    <TextBlock Text="{Binding Condition}" 
+                                               Foreground="#8b949e"
+                                               FontSize="11"
+                                               VerticalAlignment="Center"
+                                               TextWrapping="Wrap"
+                                               MaxWidth="100"/>
+                                </StackPanel>
+
+                                <!-- Température -->
+                                <StackPanel Grid.Column="2" 
+                                            VerticalAlignment="Center"
+                                            Margin="15,0,0,0">
+                                    <TextBlock Text="{Binding Temperature}" 
+                                               Foreground="White"
+                                               FontSize="22"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Right"/>
+                                    <TextBlock Text="{Binding TemperatureRange}" 
+                                               Foreground="#8b949e"
+                                               FontSize="11"
+                                               HorizontalAlignment="Right"
+                                               Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
 
         <!-- Pied de page -->
-        <Border Grid.Row="2" 
+        <Border Grid.Row="3" 
                 Background="#161b22" 
                 CornerRadius="10" 
-                Padding="15" 
-                Margin="0,30,0,0">
+                Padding="15">
             <Grid>
-                <TextBlock Text="V's Meteo v1.01" 
+                <TextBlock Text="V's Meteo v2.0" 
                            Foreground="#8b949e" 
                            FontSize="13"
                            VerticalAlignment="Center"/>
