@@ -320,7 +320,7 @@
                            Foreground="#8b949e" 
                            FontSize="13"
                            VerticalAlignment="Center"/>
-                <TextBlock Text="Powered by OpenWeatherMap" 
+                <TextBlock Text="Powered by PrevisionMétéo.ch" 
                            Foreground="#58a6ff" 
                            FontSize="12"
                            HorizontalAlignment="Right"
