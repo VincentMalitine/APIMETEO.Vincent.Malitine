@@ -12,7 +12,7 @@ namespace APIMETEO.Vincent.Malitine
     /// </summary>
     public partial class MainWindow : Window
     {
-        public string City = "Paris";
+        public string City = "Annecy";
 
         public MainWindow()
         {
