@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using APIMETEO.Vincent.Malitine.model;
+using Settings = APIMETEO.Vincent.Malitine.Properties.Settings;
 
 namespace APIMETEO.Vincent.Malitine.views
 {
@@ -33,7 +34,7 @@ namespace APIMETEO.Vincent.Malitine.views
 
         private void LoadThemes()
         {
-            string currentTheme = Properties.Settings.Default.SelectedTheme;
+            string currentTheme = Settings.Default.SelectedTheme;
             if (string.IsNullOrEmpty(currentTheme))
                 currentTheme = "GitHub Dark";
 
@@ -57,7 +58,7 @@ namespace APIMETEO.Vincent.Malitine.views
 
         private void LoadDefaultCity()
         {
-            string defaultCity = Properties.Settings.Default.DefaultCity;
+            string defaultCity = Settings.Default.DefaultCity;
             if (string.IsNullOrEmpty(defaultCity))
                 defaultCity = "Annecy";
 
@@ -93,8 +94,8 @@ namespace APIMETEO.Vincent.Malitine.views
             }
 
             // Sauvegarde la nouvelle ville par défaut
-            Properties.Settings.Default.DefaultCity = newCity;
-            Properties.Settings.Default.Save();
+            Settings.Default.DefaultCity = newCity;
+            Settings.Default.Save();
 
             // Met à jour l'affichage
             CurrentCityDisplay.Text = newCity;
