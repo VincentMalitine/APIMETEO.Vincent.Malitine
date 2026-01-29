@@ -24,12 +24,24 @@ namespace APIMETEO.Vincent.Malitine
             // Charger le thème sauvegardé
             ThemeManager.LoadSavedTheme();
             
+            // Charger la ville par défaut
+            LoadDefaultCity();
+            
             // Créer et charger meteopage
             _meteoPage = new meteopage();
             MainFrame.Navigate(_meteoPage);
             
             UpdateCityDisplay();
             SetWeatherDataAsync();
+        }
+
+        private void LoadDefaultCity()
+        {
+            string defaultCity = Properties.Settings.Default.DefaultCity;
+            if (!string.IsNullOrEmpty(defaultCity))
+            {
+                City = defaultCity;
+            }
         }
 
         private void UpdateCityDisplay()
@@ -269,6 +281,13 @@ namespace APIMETEO.Vincent.Malitine
             
             // Masquer le bouton de recherche
             SearchCityBtn.Visibility = Visibility.Collapsed;
+        }
+
+        public void UpdateDefaultCity(string newCity)
+        {
+            City = newCity;
+            UpdateCityDisplay();
+            SetWeatherDataAsync();
         }
     }
 

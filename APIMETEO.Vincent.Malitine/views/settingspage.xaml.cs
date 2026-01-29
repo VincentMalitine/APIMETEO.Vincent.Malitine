@@ -27,6 +27,7 @@ namespace APIMETEO.Vincent.Malitine.views
         {
             InitializeComponent();
             LoadThemes();
+            LoadDefaultCity();
         }
 
         private void LoadThemes()
@@ -53,6 +54,16 @@ namespace APIMETEO.Vincent.Malitine.views
             ThemesListControl.ItemsSource = _themes;
         }
 
+        private void LoadDefaultCity()
+        {
+            string defaultCity = Properties.Settings.Default.DefaultCity;
+            if (string.IsNullOrEmpty(defaultCity))
+                defaultCity = "Annecy";
+
+            DefaultCityTextBox.Text = defaultCity;
+            CurrentCityDisplay.Text = defaultCity;
+        }
+
         private void ThemeCard_Click(object sender, MouseButtonEventArgs e)
         {
             if (sender is Border border && border.Tag is string themeName)
@@ -67,6 +78,34 @@ namespace APIMETEO.Vincent.Malitine.views
                 MessageBox.Show($"Thème '{themeName}' appliqué avec succès!", 
                     "Thème changé", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+
+        private void SaveCityBtn_Click(object sender, RoutedEventArgs e)
+        {
+            string newCity = DefaultCityTextBox.Text.Trim();
+
+            if (string.IsNullOrEmpty(newCity))
+            {
+                MessageBox.Show("Veuillez entrer un nom de ville valide.", 
+                    "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Sauvegarde la nouvelle ville par défaut
+            Properties.Settings.Default.DefaultCity = newCity;
+            Properties.Settings.Default.Save();
+
+            // Met à jour l'affichage
+            CurrentCityDisplay.Text = newCity;
+
+            // Informe la MainWindow de mettre à jour la ville
+            if (Application.Current.MainWindow is MainWindow mainWindow)
+            {
+                mainWindow.UpdateDefaultCity(newCity);
+            }
+
+            MessageBox.Show($"Ville par défaut changée en '{newCity}'.\nLa météo sera mise à jour automatiquement.", 
+                "Ville enregistrée", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private SolidColorBrush ConvertColor(string hex)

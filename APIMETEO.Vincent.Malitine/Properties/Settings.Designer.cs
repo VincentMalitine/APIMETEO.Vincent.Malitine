@@ -28,5 +28,20 @@ namespace APIMETEO.Vincent.Malitine.Properties
                 this["SelectedTheme"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Annecy")]
+        public string DefaultCity
+        {
+            get
+            {
+                return ((string)(this["DefaultCity"]));
+            }
+            set
+            {
+                this["DefaultCity"] = value;
+            }
+        }
     }
 }
