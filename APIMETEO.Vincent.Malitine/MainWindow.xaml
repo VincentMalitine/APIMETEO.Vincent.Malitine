@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:APIMETEO.Vincent.Malitine"
         mc:Ignorable="d"
-        Title="V's Meteo 🍃" Height="700" Width="900"
+        Title="V's Meteo 🍃" Height="800" Width="1000"
         Background="#0f1419"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
@@ -93,7 +93,6 @@
     <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -115,113 +114,12 @@
         </Grid>
 
         <!-- Carte principale - Météo actuelle -->
-        <Border Grid.Row="1" 
-                Style="{StaticResource CardStyle}" 
-                Margin="0,0,0,20"
-                Padding="30">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Nom de la ville -->
-                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,50,0">
-                    <TextBlock Name="CityNameDisplay"
-                               Text="Paris"
-                               Foreground="White" 
-                               FontSize="36" 
-                               FontWeight="Bold"/>
-                </StackPanel>
-
-                <!-- Icône météo et températures -->
-                <StackPanel Grid.Column="1" 
-                            Orientation="Horizontal" 
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center">
-                    <Viewbox Height="80" Width="80" Margin="0,0,20,0">
-                        <TextBlock Name="Weather"
-                                   Text="?"
-                                   FontSize="80"
-                                   Foreground="White"/>
-                    </Viewbox>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock Name="Temp"
-                                   Text="--°C"
-                                   Foreground="White"
-                                   FontSize="56"
-                                   FontWeight="Light"/>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
-                            <TextBlock Text="Temp moyenne: " 
-                                       Foreground="#8b949e"
-                                       FontSize="14"
-                                       FontWeight="Medium"/>
-                            <TextBlock Name="TempMid"
-                                       Text="--°C"
-                                       Foreground="#8b949e"
-                                       FontSize="14"
-                                       FontWeight="Medium"/>
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
-
-                <!-- Détails supplémentaires -->
-                <StackPanel Grid.Column="2" 
-                            VerticalAlignment="Center"
-                            Margin="50,0,0,0">
-                    <Border Background="#161b22" 
-                            CornerRadius="8" 
-                            Padding="15,10"
-                            Margin="0,0,0,10">
-                        <StackPanel>
-                            <TextBlock Text="MAX" 
-                                       Foreground="#8b949e" 
-                                       FontSize="11"
-                                       FontWeight="Medium"/>
-                            <TextBlock Name="TempHigh" 
-                                       Text="--°C"
-                                       Foreground="#ff6b6b"
-                                       FontSize="18"
-                                       FontWeight="Bold"/>
-                        </StackPanel>
-                    </Border>
-                    
-                    <Border Background="#161b22" 
-                            CornerRadius="8" 
-                            Padding="15,10"
-                            Margin="0,0,0,10">
-                        <StackPanel>
-                            <TextBlock Text="MIN" 
-                                       Foreground="#8b949e" 
-                                       FontSize="11"
-                                       FontWeight="Medium"/>
-                            <TextBlock Name="TempLow" 
-                                       Text="--°C"
-                                       Foreground="#4dabf7"
-                                       FontSize="18"
-                                       FontWeight="Bold"/>
-                        </StackPanel>
-                    </Border>
-                    
-                    <Border Background="#161b22" 
-                            CornerRadius="8" 
-                            Padding="15,10">
-                        <StackPanel>
-                            <TextBlock Text="HUMIDITÉ" 
-                                       Foreground="#8b949e" 
-                                       FontSize="11"
-                                       FontWeight="Medium"/>
-                            <TextBlock Name="Precip" 
-                                       Text="--%"
-                                       Foreground="#51cf66"
-                                       FontSize="18"
-                                       FontWeight="Bold"/>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-            </Grid>
-        </Border>
+        <!-- Frame pour afficher meteopage -->
+<Frame Grid.Row="1" 
+       Name="MainFrame"
+       NavigationUIVisibility="Hidden"
+       Background="Transparent"
+       Margin="0,0,0,20"/>
 
         <!-- Prévisions sur 6 jours -->
         <Grid Grid.Row="2" Margin="0,0,0,20">
@@ -311,12 +209,12 @@
         </Grid>
 
         <!-- Pied de page -->
-        <Border Grid.Row="3" 
+        <Border Grid.Row="2" 
                 Background="#161b22" 
                 CornerRadius="10" 
                 Padding="15">
             <Grid>
-                <TextBlock Text="V's Meteo v2.0" 
+                <TextBlock Text="V's Meteo v2.01" 
                            Foreground="#8b949e" 
                            FontSize="13"
                            VerticalAlignment="Center"/>

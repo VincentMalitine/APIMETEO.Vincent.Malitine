@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using APIMETEO.Vincent.Malitine.views;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Windows;
@@ -13,12 +14,26 @@ namespace APIMETEO.Vincent.Malitine
     public partial class MainWindow : Window
     {
         public string City = "Annecy";
+        private meteopage? _meteoPage;
 
         public MainWindow()
         {
             InitializeComponent();
+            
+            // Créer et charger meteopage
+            _meteoPage = new meteopage();
+            MainFrame.Navigate(_meteoPage);
+            
             UpdateCityDisplay();
             SetWeatherDataAsync();
+        }
+
+        private void UpdateCityDisplay()
+        {
+            if (_meteoPage != null)
+            {
+                _meteoPage.CityNameDisplay.Text = City;
+            }
         }
 
         /// Boucle de mise à jour des données météo toutes les secondes
@@ -32,29 +47,29 @@ namespace APIMETEO.Vincent.Malitine
                 // Récupère les données depuis l'API
                 var weatherData = await GetWeatherDataAsync();
                 
-                if (weatherData != null)
+                if (weatherData != null && _meteoPage != null)
                 {
                     // Mise à jour des conditions actuelles
                     if (weatherData.current_condition != null)
                     {
                         // Affiche la température actuelle
-                        Temp.Text = $"{weatherData.current_condition.tmp}°C";
+                        _meteoPage.Temp.Text = $"{weatherData.current_condition.tmp}°C";
                         // Affiche le taux d'humidité
-                        Precip.Text = $"{weatherData.current_condition.humidity}%";
+                        _meteoPage.Precip.Text = $"{weatherData.current_condition.humidity}%";
                         // Affiche l'icône météo correspondante
-                        Weather.Text = GetWeatherIcon(weatherData.current_condition.condition_key);
+                        _meteoPage.Weather.Text = GetWeatherIcon(weatherData.current_condition.condition_key);
                     }
                     
                     // Mise à jour des températures du jour
                     if (weatherData.fcst_day_0 != null)
                     {
                         // Température maximale
-                        TempHigh.Text = $"{weatherData.fcst_day_0.tmax}°C";
+                        _meteoPage.TempHigh.Text = $"{weatherData.fcst_day_0.tmax}°C";
                         // Température minimale
-                        TempLow.Text = $"{weatherData.fcst_day_0.tmin}°C";
+                        _meteoPage.TempLow.Text = $"{weatherData.fcst_day_0.tmin}°C";
                         // Calcul et affichage de la température moyenne
                         int tempMoyenne = (weatherData.fcst_day_0.tmax + weatherData.fcst_day_0.tmin) / 2;
-                        TempMid.Text = $"{tempMoyenne}°C";
+                        _meteoPage.TempMid.Text = $"{tempMoyenne}°C";
                     }
                     
                     // Met à jour les prévisions des jours suivants
@@ -66,6 +81,8 @@ namespace APIMETEO.Vincent.Malitine
         /// Crée la liste des prévisions pour les 4 prochains jours
         private void UpdateForecasts(Root weatherData)
         {
+            if (_meteoPage == null) return;
+            
             var forecasts = new List<ForecastDay>();
 
             // Ajout des prévisions pour le jour 1
@@ -125,7 +142,7 @@ namespace APIMETEO.Vincent.Malitine
             }
 
             // Lie les prévisions à l'interface utilisateur
-            ForecastList.ItemsSource = forecasts;
+            _meteoPage.ForecastList.ItemsSource = forecasts;
         }
 
         /// Retire les accents d'une chaîne de caractères
@@ -212,11 +229,6 @@ namespace APIMETEO.Vincent.Malitine
                     UpdateCityDisplay();
                 }
             }
-        }
-
-        private void UpdateCityDisplay()
-        {
-            CityNameDisplay.Text = City;
         }
     }
 
