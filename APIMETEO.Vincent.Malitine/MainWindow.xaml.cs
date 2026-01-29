@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Windows;
 using System.Globalization;
 using System.Text;
+using System.Windows.Media;
 
 namespace APIMETEO.Vincent.Malitine
 {
@@ -19,6 +20,9 @@ namespace APIMETEO.Vincent.Malitine
         public MainWindow()
         {
             InitializeComponent();
+            
+            // Charger le thème sauvegardé
+            ThemeManager.LoadSavedTheme();
             
             // Créer et charger meteopage
             _meteoPage = new meteopage();
@@ -229,6 +233,42 @@ namespace APIMETEO.Vincent.Malitine
                     UpdateCityDisplay();
                 }
             }
+        }
+
+        private void BtnMeteoPage_Click(object sender, RoutedEventArgs e)
+        {
+            // Navigation vers la page météo
+            if (_meteoPage == null)
+            {
+                _meteoPage = new meteopage();
+            }
+            MainFrame.Navigate(_meteoPage);
+            
+            // Mise à jour du style des boutons
+            BtnMeteoPage.Style = (Style)FindResource("MenuButtonActiveStyle");
+            BtnSettingsPage.Style = (Style)FindResource("MenuButtonStyle");
+            
+            // Mise à jour du titre
+            PageTitle.Text = "☁️ MÉTÉO";
+            
+            // Afficher le bouton de recherche
+            SearchCityBtn.Visibility = Visibility.Visible;
+        }
+
+        private void BtnSettingsPage_Click(object sender, RoutedEventArgs e)
+        {
+            // Navigation vers la page paramètres
+            MainFrame.Navigate(new settingspage());
+            
+            // Mise à jour du style des boutons
+            BtnSettingsPage.Style = (Style)FindResource("MenuButtonActiveStyle");
+            BtnMeteoPage.Style = (Style)FindResource("MenuButtonStyle");
+            
+            // Mise à jour du titre
+            PageTitle.Text = "⚙️ PARAMÈTRES";
+            
+            // Masquer le bouton de recherche
+            SearchCityBtn.Visibility = Visibility.Collapsed;
         }
     }
 
@@ -1015,4 +1055,123 @@ namespace APIMETEO.Vincent.Malitine
     }
 
     #endregion
+
+    public static class ThemeManager
+    {
+        // Définition des 5 thèmes prédéfinis
+        public static readonly Dictionary<string, ThemeColors> Themes = new()
+        {
+            {
+                "GitHub Dark", new ThemeColors
+                {
+                    Background = "#0f1419",
+                    CardBackground = "#1a1f2e",
+                    SecondaryBackground = "#161b22",
+                    AccentColor = "#58a6ff",
+                    AccentHover = "#79c0ff",
+                    TextPrimary = "#ffffff",
+                    TextSecondary = "#8b949e"
+                }
+            },
+            {
+                "Ocean Blue", new ThemeColors
+                {
+                    Background = "#0a1929",
+                    CardBackground = "#1e3a5f",
+                    SecondaryBackground = "#132f4c",
+                    AccentColor = "#3399ff",
+                    AccentHover = "#66b2ff",
+                    TextPrimary = "#ffffff",
+                    TextSecondary = "#b0bec5"
+                }
+            },
+            {
+                "Forest Green", new ThemeColors
+                {
+                    Background = "#0d1f0d",
+                    CardBackground = "#1a2e1a",
+                    SecondaryBackground = "#162316",
+                    AccentColor = "#4caf50",
+                    AccentHover = "#66bb6a",
+                    TextPrimary = "#ffffff",
+                    TextSecondary = "#a5d6a7"
+                }
+            },
+            {
+                "Sunset Orange", new ThemeColors
+                {
+                    Background = "#1f0f0a",
+                    CardBackground = "#2e1e1a",
+                    SecondaryBackground = "#231612",
+                    AccentColor = "#ff7043",
+                    AccentHover = "#ff8a65",
+                    TextPrimary = "#ffffff",
+                    TextSecondary = "#ffccbc"
+                }
+            },
+            {
+                "Purple Night", new ThemeColors
+                {
+                    Background = "#1a0f29",
+                    CardBackground = "#2a1e3e",
+                    SecondaryBackground = "#1f1630",
+                    AccentColor = "#9c27b0",
+                    AccentHover = "#ba68c8",
+                    TextPrimary = "#ffffff",
+                    TextSecondary = "#ce93d8"
+                }
+            }
+        };
+
+        // Applique un thème à l'application
+        public static void ApplyTheme(string themeName)
+        {
+            if (!Themes.ContainsKey(themeName))
+                return;
+
+            var theme = Themes[themeName];
+            var app = Application.Current;
+
+            // Met à jour les ressources de l'application
+            app.Resources["BackgroundColor"] = ConvertColor(theme.Background);
+            app.Resources["CardBackgroundColor"] = ConvertColor(theme.CardBackground);
+            app.Resources["SecondaryBackgroundColor"] = ConvertColor(theme.SecondaryBackground);
+            app.Resources["AccentColor"] = ConvertColor(theme.AccentColor);
+            app.Resources["AccentHoverColor"] = ConvertColor(theme.AccentHover);
+            app.Resources["TextPrimaryColor"] = ConvertColor(theme.TextPrimary);
+            app.Resources["TextSecondaryColor"] = ConvertColor(theme.TextSecondary);
+
+            // Sauvegarde le thème sélectionné
+            Properties.Settings.Default.SelectedTheme = themeName;
+            Properties.Settings.Default.Save();
+        }
+
+        // Charge le thème sauvegardé
+        public static void LoadSavedTheme()
+        {
+            string savedTheme = Properties.Settings.Default.SelectedTheme;
+            if (string.IsNullOrEmpty(savedTheme))
+                savedTheme = "GitHub Dark";
+
+            ApplyTheme(savedTheme);
+        }
+
+        // Convertit une couleur hexadécimale en SolidColorBrush
+        private static SolidColorBrush ConvertColor(string hex)
+        {
+            return new SolidColorBrush((Color)ColorConverter.ConvertFromString(hex));
+        }
+    }
+
+    // Classe pour définir les couleurs d'un thème
+    public class ThemeColors
+    {
+        public required string Background { get; set; }
+        public required string CardBackground { get; set; }
+        public required string SecondaryBackground { get; set; }
+        public required string AccentColor { get; set; }
+        public required string AccentHover { get; set; }
+        public required string TextPrimary { get; set; }
+        public required string TextSecondary { get; set; }
+    }
 }

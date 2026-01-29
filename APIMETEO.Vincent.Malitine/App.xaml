@@ -4,6 +4,16 @@
              xmlns:local="clr-namespace:APIMETEO.Vincent.Malitine"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!-- Couleurs du thème (modifiables dynamiquement) -->
+        <SolidColorBrush x:Key="BackgroundColor" Color="#0f1419"/>
+        <SolidColorBrush x:Key="CardBackgroundColor" Color="#1a1f2e"/>
+        <SolidColorBrush x:Key="SecondaryBackgroundColor" Color="#161b22"/>
+        <SolidColorBrush x:Key="AccentColor" Color="#58a6ff"/>
+        <SolidColorBrush x:Key="AccentHoverColor" Color="#79c0ff"/>
+        <SolidColorBrush x:Key="TextPrimaryColor" Color="#ffffff"/>
+        <SolidColorBrush x:Key="TextSecondaryColor" Color="#8b949e"/>
+        
+        <!-- Convertisseur -->
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </Application.Resources>
 </Application>

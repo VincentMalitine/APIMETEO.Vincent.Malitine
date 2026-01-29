@@ -6,62 +6,49 @@
         xmlns:local="clr-namespace:APIMETEO.Vincent.Malitine"
         mc:Ignorable="d"
         Title="V's Meteo 🍃" Height="800" Width="1000"
-        Background="#0f1419"
+        Background="{DynamicResource BackgroundColor}"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
 
     <Window.Resources>
-        <!-- Style pour les cartes -->
-        <Style x:Key="CardStyle" TargetType="Border">
-            <Setter Property="Background" Value="#1a1f2e"/>
-            <Setter Property="CornerRadius" Value="15"/>
-            <Setter Property="Padding" Value="20"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect Color="Black" Opacity="0.5" BlurRadius="20" ShadowDepth="5"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Style pour les cartes de prévision -->
-        <Style x:Key="ForecastCardStyle" TargetType="Border">
-            <Setter Property="Background" Value="#1a1f2e"/>
-            <Setter Property="CornerRadius" Value="10"/>
-            <Setter Property="Padding" Value="15"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect Color="Black" Opacity="0.3" BlurRadius="15" ShadowDepth="3"/>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Style pour les titres -->
-        <Style x:Key="TitleStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#8b949e"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="Medium"/>
-            <Setter Property="Margin" Value="0,0,0,8"/>
-        </Style>
-
-        <!-- Style pour les valeurs principales -->
-        <Style x:Key="ValueStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="20"/>
+        <!-- Style pour les boutons du menu -->
+        <Style x:Key="MenuButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextSecondaryColor}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="FontSize" Value="15"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource TextPrimaryColor}"/>
+                                <Setter Property="Background" Value="#21262d"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
-
-        <!-- Style pour la température principale -->
-        <Style x:Key="MainTempStyle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="72"/>
-            <Setter Property="FontWeight" Value="Light"/>
+        
+        <Style x:Key="MenuButtonActiveStyle" TargetType="Button" BasedOn="{StaticResource MenuButtonStyle}">
+            <Setter Property="Background" Value="{DynamicResource AccentColor}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryColor}"/>
         </Style>
 
         <!-- Style pour le bouton de recherche -->
         <Style x:Key="SearchButton" TargetType="Button">
-            <Setter Property="Background" Value="#58a6ff"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{DynamicResource AccentColor}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryColor}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="15,10"/>
             <Setter Property="FontSize" Value="14"/>
@@ -78,10 +65,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#79c0ff"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#388bfd"/>
+                                <Setter Property="Background" Value="{DynamicResource AccentHoverColor}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -93,14 +77,37 @@
     <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- Menu de navigation -->
+        <Border Grid.Row="0" 
+                Background="{DynamicResource SecondaryBackgroundColor}" 
+                CornerRadius="10" 
+                Padding="15,10"
+                Margin="0,0,0,15">
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Name="BtnMeteoPage" 
+                            Content="☁️ Météo"
+                            Style="{StaticResource MenuButtonActiveStyle}"
+                            Click="BtnMeteoPage_Click"
+                            Margin="0,0,10,0"/>
+                    <Button Name="BtnSettingsPage" 
+                            Content="⚙️ Paramètres"
+                            Style="{StaticResource MenuButtonStyle}"
+                            Click="BtnSettingsPage_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
         <!-- En-tête avec bouton de recherche -->
-        <Grid Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="☁️ MÉTÉO" 
-                       Foreground="White" 
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <TextBlock Name="PageTitle"
+                       Text="☁️ MÉTÉO" 
+                       Foreground="{DynamicResource TextPrimaryColor}" 
                        FontSize="32" 
                        FontWeight="Bold"
                        HorizontalAlignment="Left"/>
@@ -113,113 +120,25 @@
                     Click="SearchCityBtn_Click"/>
         </Grid>
 
-        <!-- Carte principale - Météo actuelle -->
-        <!-- Frame pour afficher meteopage -->
-<Frame Grid.Row="1" 
-       Name="MainFrame"
-       NavigationUIVisibility="Hidden"
-       Background="Transparent"
-       Margin="0,0,0,20"/>
-
-        <!-- Prévisions sur 6 jours -->
-        <Grid Grid.Row="2" Margin="0,0,0,20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <!-- Titre des prévisions -->
-            <TextBlock Grid.Row="0" 
-                       Text="PRÉVISIONS" 
-                       Foreground="#8b949e"
-                       FontSize="16"
-                       FontWeight="SemiBold"
-                       Margin="5,0,0,15"/>
-
-            <!-- Grille des prévisions -->
-            <ItemsControl Grid.Row="1" Name="ForecastList">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="3" Rows="2"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Style="{StaticResource ForecastCardStyle}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <!-- Jour -->
-                                <StackPanel Grid.Column="0" 
-                                            VerticalAlignment="Center"
-                                            Margin="0,0,15,0">
-                                    <TextBlock Text="{Binding DayName}" 
-                                               Foreground="White"
-                                               FontSize="14"
-                                               FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Date}" 
-                                               Foreground="#8b949e"
-                                               FontSize="11"
-                                               Margin="0,2,0,0"/>
-                                </StackPanel>
-
-                                <!-- Icône et condition -->
-                                <StackPanel Grid.Column="1" 
-                                            Orientation="Horizontal"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Center">
-                                    <Viewbox Height="35" Width="35" Margin="0,0,10,0">
-                                        <TextBlock Text="{Binding WeatherIcon}" 
-                                                   FontSize="35"
-                                                   Foreground="White"/>
-                                    </Viewbox>
-                                    <TextBlock Text="{Binding Condition}" 
-                                               Foreground="#8b949e"
-                                               FontSize="11"
-                                               VerticalAlignment="Center"
-                                               TextWrapping="Wrap"
-                                               MaxWidth="100"/>
-                                </StackPanel>
-
-                                <!-- Température -->
-                                <StackPanel Grid.Column="2" 
-                                            VerticalAlignment="Center"
-                                            Margin="15,0,0,0">
-                                    <TextBlock Text="{Binding Temperature}" 
-                                               Foreground="White"
-                                               FontSize="22"
-                                               FontWeight="Bold"
-                                               HorizontalAlignment="Right"/>
-                                    <TextBlock Text="{Binding TemperatureRange}" 
-                                               Foreground="#8b949e"
-                                               FontSize="11"
-                                               HorizontalAlignment="Right"
-                                               Margin="0,2,0,0"/>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Grid>
+        <!-- Frame pour afficher les pages -->
+        <Frame Grid.Row="2" 
+               Name="MainFrame"
+               NavigationUIVisibility="Hidden"
+               Background="Transparent"
+               Margin="0,0,0,20"/>
 
         <!-- Pied de page -->
-        <Border Grid.Row="2" 
-                Background="#161b22" 
+        <Border Grid.Row="3" 
+                Background="{DynamicResource SecondaryBackgroundColor}" 
                 CornerRadius="10" 
                 Padding="15">
             <Grid>
-                <TextBlock Text="V's Meteo v2.01" 
-                           Foreground="#8b949e" 
+                <TextBlock Text="V's Meteo v2.1" 
+                           Foreground="{DynamicResource TextSecondaryColor}" 
                            FontSize="13"
                            VerticalAlignment="Center"/>
                 <TextBlock Text="Powered by PrevisionMétéo.ch" 
-                           Foreground="#58a6ff" 
+                           Foreground="{DynamicResource AccentColor}" 
                            FontSize="12"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center"/>

@@ -5,10 +5,103 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:APIMETEO.Vincent.Malitine.views"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="settingspage">
+      d:DesignHeight="600" d:DesignWidth="840"
+      Title="settingspage"
+      Background="Transparent">
 
-    <Grid>
-        
-    </Grid>
+    <Page.Resources>
+        <!-- Style pour les cartes de thème -->
+        <Style x:Key="ThemeCardStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" Opacity="0.3" BlurRadius="15" ShadowDepth="3"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="10">
+            <StackPanel>
+                <!-- Titre de la section -->
+                <TextBlock Text="Thèmes de couleur" 
+                           Foreground="{DynamicResource TextPrimaryColor}"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           Margin="0,0,0,20"/>
+
+                <TextBlock Text="Sélectionnez un thème pour personnaliser l'apparence de l'application" 
+                           Foreground="{DynamicResource TextSecondaryColor}"
+                           FontSize="14"
+                           Margin="0,0,0,30"/>
+
+                <!-- Grille des thèmes -->
+                <ItemsControl Name="ThemesListControl">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource ThemeCardStyle}"
+                                    Background="{Binding CardColor}"
+                                    BorderBrush="{Binding BorderColor}"
+                                    MouseLeftButtonDown="ThemeCard_Click"
+                                    Tag="{Binding Name}"
+                                    Width="200"
+                                    Height="150">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Nom du thème -->
+                                    <TextBlock Grid.Row="0"
+                                               Text="{Binding Name}"
+                                               Foreground="White"
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               Margin="0,0,0,15"/>
+
+                                    <!-- Aperçu des couleurs -->
+                                    <StackPanel Grid.Row="1" 
+                                                Orientation="Horizontal"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+                                        <Border Width="30" Height="30" 
+                                                Background="{Binding AccentColor}"
+                                                CornerRadius="15"
+                                                Margin="5"/>
+                                        <Border Width="30" Height="30" 
+                                                Background="{Binding SecondaryColor}"
+                                                CornerRadius="15"
+                                                Margin="5"/>
+                                    </StackPanel>
+
+                                    <!-- Indicateur de sélection -->
+                                    <TextBlock Grid.Row="2"
+                                               Text="✓ Actif"
+                                               Foreground="{Binding AccentColor}"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Center"
+                                               Visibility="{Binding IsSelected, Converter={StaticResource BoolToVisibility}}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Page>
