@@ -133,7 +133,7 @@
                 CornerRadius="10" 
                 Padding="15">
             <Grid>
-                <TextBlock Text="V's Meteo v2.1" 
+                <TextBlock Text="V's Meteo v2.11    " 
                            Foreground="{DynamicResource TextSecondaryColor}" 
                            FontSize="13"
                            VerticalAlignment="Center"/>
