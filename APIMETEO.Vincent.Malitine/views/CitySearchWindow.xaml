@@ -7,7 +7,7 @@
         Title="Rechercher une ville" 
         Height="280" 
         Width="500"
-        Background="#0f1419"
+        Background="{DynamicResource BackgroundColor}"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         WindowStyle="None"
@@ -16,13 +16,13 @@
     <Window.Resources>
         <!-- Style pour la TextBox -->
         <Style x:Key="ModernTextBox" TargetType="TextBox">
-            <Setter Property="Background" Value="#161b22"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundColor}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryColor}"/>
             <Setter Property="BorderBrush" Value="#30363d"/>
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="Padding" Value="5,6"/>
             <Setter Property="FontSize" Value="18"/>
-            <Setter Property="CaretBrush" Value="#58a6ff"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource AccentColor}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
@@ -40,8 +40,8 @@
 
         <!-- Style pour le bouton de validation -->
         <Style x:Key="ValidateButton" TargetType="Button">
-            <Setter Property="Background" Value="#238636"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{DynamicResource AccentColor}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryColor}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="0,15"/>
             <Setter Property="FontSize" Value="16"/>
@@ -58,10 +58,11 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#2ea043"/>
+                                <Setter Property="Background" Value="{DynamicResource AccentHoverColor}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#1a7f37"/>
+                                <Setter Property="Background" Value="{DynamicResource AccentColor}"/>
+                                <Setter Property="Opacity" Value="0.8"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -71,8 +72,8 @@
 
         <!-- Style pour le bouton d'annulation -->
         <Style x:Key="CancelButton" TargetType="Button">
-            <Setter Property="Background" Value="#21262d"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundColor}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextPrimaryColor}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="0,15"/>
             <Setter Property="FontSize" Value="16"/>
@@ -92,7 +93,8 @@
                                 <Setter Property="Background" Value="#30363d"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#161b22"/>
+                                <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundColor}"/>
+                                <Setter Property="Opacity" Value="0.8"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -102,7 +104,7 @@
     </Window.Resources>
 
     <Border CornerRadius="15" 
-            Background="#1a1f2e" 
+            Background="{DynamicResource CardBackgroundColor}" 
             BorderBrush="#30363d" 
             BorderThickness="2">
         <Border.Effect>
@@ -120,7 +122,7 @@
             <!-- Titre -->
             <TextBlock Grid.Row="0" 
                        Text="🔍 Rechercher une ville" 
-                       Foreground="White" 
+                       Foreground="{DynamicResource TextPrimaryColor}" 
                        FontSize="24" 
                        FontWeight="Bold"
                        Margin="0,0,0,10"/>
@@ -128,7 +130,7 @@
             <!-- Sous-titre -->
             <TextBlock Grid.Row="1" 
                        Text="Entrez le nom d'une ville française" 
-                       Foreground="#8b949e" 
+                       Foreground="{DynamicResource TextSecondaryColor}" 
                        FontSize="14"
                        Margin="0,0,0,20"/>
 
