@@ -4,13 +4,15 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:APIMETEO.Vincent.Malitine.views"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="840"
       Title="meteopage"
-      Background="#0f1419">
+      Background="Transparent">
 
     <Page.Resources>
         <!-- Style pour les cartes -->
         <Style x:Key="CardStyle" TargetType="Border">
-            <Setter Property="Background" Value="#1a1f2e"/>
+            <Setter Property="Background" Value="{DynamicResource CardBackgroundColor}"/>
             <Setter Property="CornerRadius" Value="15"/>
             <Setter Property="Padding" Value="20"/>
             <Setter Property="Effect">
@@ -22,7 +24,7 @@
 
         <!-- Style pour les cartes de prévision -->
         <Style x:Key="ForecastCardStyle" TargetType="Border">
-            <Setter Property="Background" Value="#1a1f2e"/>
+            <Setter Property="Background" Value="{DynamicResource CardBackgroundColor}"/>
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Padding" Value="15"/>
             <Setter Property="Margin" Value="5"/>
@@ -36,8 +38,8 @@
 
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Carte principale - Météo actuelle (Grid Row 1 de MainWindow) -->
@@ -56,7 +58,7 @@
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,50,0">
                     <TextBlock Name="CityNameDisplay"
                                Text="Paris"
-                               Foreground="White" 
+                               Foreground="{DynamicResource TextPrimaryColor}" 
                                FontSize="36" 
                                FontWeight="Bold"/>
                 </StackPanel>
@@ -70,22 +72,22 @@
                         <TextBlock Name="Weather"
                                    Text="?"
                                    FontSize="80"
-                                   Foreground="White"/>
+                                   Foreground="{DynamicResource TextPrimaryColor}"/>
                     </Viewbox>
                     <StackPanel VerticalAlignment="Center">
                         <TextBlock Name="Temp"
                                    Text="--°C"
-                                   Foreground="White"
+                                   Foreground="{DynamicResource TextPrimaryColor}"
                                    FontSize="56"
                                    FontWeight="Light"/>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
                             <TextBlock Text="Temp moyenne: " 
-                                       Foreground="#8b949e"
+                                       Foreground="{DynamicResource TextSecondaryColor}"
                                        FontSize="14"
                                        FontWeight="Medium"/>
                             <TextBlock Name="TempMid"
                                        Text="--°C"
-                                       Foreground="#8b949e"
+                                       Foreground="{DynamicResource TextSecondaryColor}"
                                        FontSize="14"
                                        FontWeight="Medium"/>
                         </StackPanel>
@@ -96,13 +98,13 @@
                 <StackPanel Grid.Column="2" 
                             VerticalAlignment="Center"
                             Margin="50,0,0,0">
-                    <Border Background="#161b22" 
+                    <Border Background="{DynamicResource SecondaryBackgroundColor}" 
                             CornerRadius="8" 
                             Padding="15,10"
                             Margin="0,0,0,10">
                         <StackPanel>
                             <TextBlock Text="MAX" 
-                                       Foreground="#8b949e" 
+                                       Foreground="{DynamicResource TextSecondaryColor}" 
                                        FontSize="11"
                                        FontWeight="Medium"/>
                             <TextBlock Name="TempHigh" 
@@ -113,13 +115,13 @@
                         </StackPanel>
                     </Border>
                     
-                    <Border Background="#161b22" 
+                    <Border Background="{DynamicResource SecondaryBackgroundColor}" 
                             CornerRadius="8" 
                             Padding="15,10"
                             Margin="0,0,0,10">
                         <StackPanel>
                             <TextBlock Text="MIN" 
-                                       Foreground="#8b949e" 
+                                       Foreground="{DynamicResource TextSecondaryColor}" 
                                        FontSize="11"
                                        FontWeight="Medium"/>
                             <TextBlock Name="TempLow" 
@@ -130,12 +132,12 @@
                         </StackPanel>
                     </Border>
                     
-                    <Border Background="#161b22" 
+                    <Border Background="{DynamicResource SecondaryBackgroundColor}" 
                             CornerRadius="8" 
                             Padding="15,10">
                         <StackPanel>
                             <TextBlock Text="HUMIDITÉ" 
-                                       Foreground="#8b949e" 
+                                       Foreground="{DynamicResource TextSecondaryColor}" 
                                        FontSize="11"
                                        FontWeight="Medium"/>
                             <TextBlock Name="Precip" 
@@ -159,7 +161,7 @@
             <!-- Titre des prévisions -->
             <TextBlock Grid.Row="0" 
                        Text="PRÉVISIONS" 
-                       Foreground="#8b949e"
+                       Foreground="{DynamicResource TextSecondaryColor}"
                        FontSize="16"
                        FontWeight="SemiBold"
                        Margin="5,0,0,15"/>
@@ -187,11 +189,11 @@
                                             VerticalAlignment="Center"
                                             Margin="0,0,15,0">
                                     <TextBlock Text="{Binding DayName}" 
-                                               Foreground="White"
+                                               Foreground="{DynamicResource TextPrimaryColor}"
                                                FontSize="14"
                                                FontWeight="Bold"/>
                                     <TextBlock Text="{Binding Date}" 
-                                               Foreground="#8b949e"
+                                               Foreground="{DynamicResource TextSecondaryColor}"
                                                FontSize="11"
                                                Margin="0,2,0,0"/>
                                 </StackPanel>
@@ -204,10 +206,10 @@
                                     <Viewbox Height="35" Width="35" Margin="0,0,10,0">
                                         <TextBlock Text="{Binding WeatherIcon}" 
                                                    FontSize="35"
-                                                   Foreground="White"/>
+                                                   Foreground="{DynamicResource TextPrimaryColor}"/>
                                     </Viewbox>
                                     <TextBlock Text="{Binding Condition}" 
-                                               Foreground="#8b949e"
+                                               Foreground="{DynamicResource TextSecondaryColor}"
                                                FontSize="11"
                                                VerticalAlignment="Center"
                                                TextWrapping="Wrap"
@@ -219,12 +221,12 @@
                                             VerticalAlignment="Center"
                                             Margin="15,0,0,0">
                                     <TextBlock Text="{Binding Temperature}" 
-                                               Foreground="White"
+                                               Foreground="{DynamicResource TextPrimaryColor}"
                                                FontSize="22"
                                                FontWeight="Bold"
                                                HorizontalAlignment="Right"/>
                                     <TextBlock Text="{Binding TemperatureRange}" 
-                                               Foreground="#8b949e"
+                                               Foreground="{DynamicResource TextSecondaryColor}"
                                                FontSize="11"
                                                HorizontalAlignment="Right"
                                                Margin="0,2,0,0"/>

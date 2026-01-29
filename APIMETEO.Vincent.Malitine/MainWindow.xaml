@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:APIMETEO.Vincent.Malitine"
         mc:Ignorable="d"
-        Title="V's Meteo 🍃" Height="800" Width="1000"
+        Title="V's Meteo 🍃" Height="850" Width="1000"
         Background="{DynamicResource BackgroundColor}"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize">
@@ -133,7 +133,7 @@
                 CornerRadius="10" 
                 Padding="15">
             <Grid>
-                <TextBlock Text="V's Meteo v2.11    " 
+                <TextBlock Text="V's Meteo v2.12" 
                            Foreground="{DynamicResource TextSecondaryColor}" 
                            FontSize="13"
                            VerticalAlignment="Center"/>
