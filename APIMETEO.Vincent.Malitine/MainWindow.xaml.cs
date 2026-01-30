@@ -60,7 +60,7 @@ namespace APIMETEO.Vincent.Malitine
             {
                 // Attend 1 seconde avant la prochaine mise à jour
                 await Task.Delay(1000);
-
+                
                 // Récupère les données depuis l'API
                 var weatherData = await GetWeatherDataAsync();
 
