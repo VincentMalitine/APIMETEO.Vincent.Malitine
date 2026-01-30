@@ -212,6 +212,7 @@ namespace APIMETEO.Vincent.Malitine
         {
             try
             {
+                City = RemoveAccents(City);
                 using HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.GetAsync($"https://www.prevision-meteo.ch/services/json/{City}");
 
@@ -241,9 +242,9 @@ namespace APIMETEO.Vincent.Malitine
             {
                 if (!string.IsNullOrEmpty(searchWindow.SelectedCity))
                 {
-                    // Normalise le nom de la ville en retirant les accents
-                    City = RemoveAccents(searchWindow.SelectedCity);
+                    City = searchWindow.SelectedCity;
                     UpdateCityDisplay();
+                    City = RemoveAccents(City);
                 }
             }
         }
